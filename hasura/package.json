@@ -5,5 +5,9 @@
   "license": "MIT",
   "devDependencies": {
     "hasura-cli": "^2.0.5"
+  },
+  "scripts": {
+    "status": "hasura --project hasura migrate status",
+    "consule": "hasura --project hasura console"
   }
 }

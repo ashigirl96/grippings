@@ -4,7 +4,8 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "type-check": "tsc"
+    "type-check": "tsc",
+    "gen": "gql-gen"
   },
   "dependencies": {
     "@apollo/client": "^3.4.7",
