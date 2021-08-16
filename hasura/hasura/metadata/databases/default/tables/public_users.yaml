@@ -1,0 +1,16 @@
+table:
+  name: users
+  schema: public
+configuration:
+  custom_column_names:
+    display_id: displayId
+    display_name: dispalyName
+  custom_root_fields: {}
+array_relationships:
+- name: articles
+  using:
+    foreign_key_constraint_on:
+      column: author_id
+      table:
+        name: articles
+        schema: public

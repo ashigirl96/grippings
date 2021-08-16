@@ -1,0 +1,11 @@
+table:
+  name: articles
+  schema: public
+configuration:
+  custom_column_names:
+    author_id: authorId
+  custom_root_fields: {}
+object_relationships:
+- name: user
+  using:
+    foreign_key_constraint_on: author_id
