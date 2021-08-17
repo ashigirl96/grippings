@@ -6,364 +6,328 @@ schema {
     subscription: subscription_root
 }
 
-"columns and relationships of \"articles\""
-type articles {
-    authorId: uuid!
-    content: String!
+"mutation root"
+type mutation_root {
+    "delete data from the table: \"objectives\""
+    delete_objectives(
+        "filter the rows which have to be deleted"
+        where: objectives_bool_exp!
+    ): objectives_mutation_response
+    "delete single row from the table: \"objectives\""
+    delete_objectives_by_pk(id: uuid!): objectives
+    "delete data from the table: \"task\""
+    delete_task(
+        "filter the rows which have to be deleted"
+        where: task_bool_exp!
+    ): task_mutation_response
+    "delete single row from the table: \"task\""
+    delete_task_by_pk(id: uuid!): task
+    "insert data into the table: \"objectives\""
+    insert_objectives(
+        "the rows to be inserted"
+        objects: [objectives_insert_input!]!,
+        "on conflict condition"
+        on_conflict: objectives_on_conflict
+    ): objectives_mutation_response
+    "insert a single row into the table: \"objectives\""
+    insert_objectives_one(
+        "the row to be inserted"
+        object: objectives_insert_input!,
+        "on conflict condition"
+        on_conflict: objectives_on_conflict
+    ): objectives
+    "insert data into the table: \"task\""
+    insert_task(
+        "the rows to be inserted"
+        objects: [task_insert_input!]!,
+        "on conflict condition"
+        on_conflict: task_on_conflict
+    ): task_mutation_response
+    "insert a single row into the table: \"task\""
+    insert_task_one(
+        "the row to be inserted"
+        object: task_insert_input!,
+        "on conflict condition"
+        on_conflict: task_on_conflict
+    ): task
+    "update data of the table: \"objectives\""
+    update_objectives(
+        "sets the columns of the filtered rows to the given values"
+        _set: objectives_set_input,
+        "filter the rows which have to be updated"
+        where: objectives_bool_exp!
+    ): objectives_mutation_response
+    "update single row of the table: \"objectives\""
+    update_objectives_by_pk(
+        "sets the columns of the filtered rows to the given values"
+        _set: objectives_set_input,
+        pk_columns: objectives_pk_columns_input!
+    ): objectives
+    "update data of the table: \"task\""
+    update_task(
+        "sets the columns of the filtered rows to the given values"
+        _set: task_set_input,
+        "filter the rows which have to be updated"
+        where: task_bool_exp!
+    ): task_mutation_response
+    "update single row of the table: \"task\""
+    update_task_by_pk(
+        "sets the columns of the filtered rows to the given values"
+        _set: task_set_input,
+        pk_columns: task_pk_columns_input!
+    ): task
+}
+
+"columns and relationships of \"objectives\""
+type objectives {
     created_at: timestamptz!
+    favorite: Boolean!
     id: uuid!
-    published_at: timestamptz
-    subject: String!
+    notionUrl: String
+    title: String!
     updated_at: timestamptz!
-    "An object relationship"
-    user: users!
 }
 
-"aggregated selection of \"articles\""
-type articles_aggregate {
-    aggregate: articles_aggregate_fields
-    nodes: [articles!]!
+"aggregated selection of \"objectives\""
+type objectives_aggregate {
+    aggregate: objectives_aggregate_fields
+    nodes: [objectives!]!
 }
 
-"aggregate fields of \"articles\""
-type articles_aggregate_fields {
-    count(columns: [articles_select_column!], distinct: Boolean): Int!
-    max: articles_max_fields
-    min: articles_min_fields
+"aggregate fields of \"objectives\""
+type objectives_aggregate_fields {
+    count(columns: [objectives_select_column!], distinct: Boolean): Int!
+    max: objectives_max_fields
+    min: objectives_min_fields
 }
 
 "aggregate max on columns"
-type articles_max_fields {
-    authorId: uuid
-    content: String
+type objectives_max_fields {
     created_at: timestamptz
     id: uuid
-    published_at: timestamptz
-    subject: String
+    notionUrl: String
+    title: String
     updated_at: timestamptz
 }
 
 "aggregate min on columns"
-type articles_min_fields {
-    authorId: uuid
-    content: String
+type objectives_min_fields {
     created_at: timestamptz
     id: uuid
-    published_at: timestamptz
-    subject: String
+    notionUrl: String
+    title: String
     updated_at: timestamptz
 }
 
-"response of any mutation on the table \"articles\""
-type articles_mutation_response {
+"response of any mutation on the table \"objectives\""
+type objectives_mutation_response {
     "number of rows affected by the mutation"
     affected_rows: Int!
     "data from the rows affected by the mutation"
-    returning: [articles!]!
-}
-
-"mutation root"
-type mutation_root {
-    "delete data from the table: \"articles\""
-    delete_articles(
-        "filter the rows which have to be deleted"
-        where: articles_bool_exp!
-    ): articles_mutation_response
-    "delete single row from the table: \"articles\""
-    delete_articles_by_pk(id: uuid!): articles
-    "delete data from the table: \"users\""
-    delete_users(
-        "filter the rows which have to be deleted"
-        where: users_bool_exp!
-    ): users_mutation_response
-    "delete single row from the table: \"users\""
-    delete_users_by_pk(id: uuid!): users
-    "insert data into the table: \"articles\""
-    insert_articles(
-        "the rows to be inserted"
-        objects: [articles_insert_input!]!,
-        "on conflict condition"
-        on_conflict: articles_on_conflict
-    ): articles_mutation_response
-    "insert a single row into the table: \"articles\""
-    insert_articles_one(
-        "the row to be inserted"
-        object: articles_insert_input!,
-        "on conflict condition"
-        on_conflict: articles_on_conflict
-    ): articles
-    "insert data into the table: \"users\""
-    insert_users(
-        "the rows to be inserted"
-        objects: [users_insert_input!]!,
-        "on conflict condition"
-        on_conflict: users_on_conflict
-    ): users_mutation_response
-    "insert a single row into the table: \"users\""
-    insert_users_one(
-        "the row to be inserted"
-        object: users_insert_input!,
-        "on conflict condition"
-        on_conflict: users_on_conflict
-    ): users
-    "update data of the table: \"articles\""
-    update_articles(
-        "sets the columns of the filtered rows to the given values"
-        _set: articles_set_input,
-        "filter the rows which have to be updated"
-        where: articles_bool_exp!
-    ): articles_mutation_response
-    "update single row of the table: \"articles\""
-    update_articles_by_pk(
-        "sets the columns of the filtered rows to the given values"
-        _set: articles_set_input,
-        pk_columns: articles_pk_columns_input!
-    ): articles
-    "update data of the table: \"users\""
-    update_users(
-        "sets the columns of the filtered rows to the given values"
-        _set: users_set_input,
-        "filter the rows which have to be updated"
-        where: users_bool_exp!
-    ): users_mutation_response
-    "update single row of the table: \"users\""
-    update_users_by_pk(
-        "sets the columns of the filtered rows to the given values"
-        _set: users_set_input,
-        pk_columns: users_pk_columns_input!
-    ): users
+    returning: [objectives!]!
 }
 
 type query_root {
-    "An array relationship"
-    articles(
+    "fetch data from the table: \"objectives\""
+    objectives(
         "distinct select on columns"
-        distinct_on: [articles_select_column!],
+        distinct_on: [objectives_select_column!],
         "limit the number of rows returned"
         limit: Int,
         "skip the first n rows. Use only with order_by"
         offset: Int,
         "sort the rows by one or more columns"
-        order_by: [articles_order_by!],
+        order_by: [objectives_order_by!],
         "filter the rows returned"
-        where: articles_bool_exp
-    ): [articles!]!
-    "An aggregate relationship"
-    articles_aggregate(
+        where: objectives_bool_exp
+    ): [objectives!]!
+    "fetch aggregated fields from the table: \"objectives\""
+    objectives_aggregate(
         "distinct select on columns"
-        distinct_on: [articles_select_column!],
+        distinct_on: [objectives_select_column!],
         "limit the number of rows returned"
         limit: Int,
         "skip the first n rows. Use only with order_by"
         offset: Int,
         "sort the rows by one or more columns"
-        order_by: [articles_order_by!],
+        order_by: [objectives_order_by!],
         "filter the rows returned"
-        where: articles_bool_exp
-    ): articles_aggregate!
-    "fetch data from the table: \"articles\" using primary key columns"
-    articles_by_pk(id: uuid!): articles
-    "fetch data from the table: \"users\""
-    users(
+        where: objectives_bool_exp
+    ): objectives_aggregate!
+    "fetch data from the table: \"objectives\" using primary key columns"
+    objectives_by_pk(id: uuid!): objectives
+    "fetch data from the table: \"task\""
+    task(
         "distinct select on columns"
-        distinct_on: [users_select_column!],
+        distinct_on: [task_select_column!],
         "limit the number of rows returned"
         limit: Int,
         "skip the first n rows. Use only with order_by"
         offset: Int,
         "sort the rows by one or more columns"
-        order_by: [users_order_by!],
+        order_by: [task_order_by!],
         "filter the rows returned"
-        where: users_bool_exp
-    ): [users!]!
-    "fetch aggregated fields from the table: \"users\""
-    users_aggregate(
+        where: task_bool_exp
+    ): [task!]!
+    "fetch aggregated fields from the table: \"task\""
+    task_aggregate(
         "distinct select on columns"
-        distinct_on: [users_select_column!],
+        distinct_on: [task_select_column!],
         "limit the number of rows returned"
         limit: Int,
         "skip the first n rows. Use only with order_by"
         offset: Int,
         "sort the rows by one or more columns"
-        order_by: [users_order_by!],
+        order_by: [task_order_by!],
         "filter the rows returned"
-        where: users_bool_exp
-    ): users_aggregate!
-    "fetch data from the table: \"users\" using primary key columns"
-    users_by_pk(id: uuid!): users
+        where: task_bool_exp
+    ): task_aggregate!
+    "fetch data from the table: \"task\" using primary key columns"
+    task_by_pk(id: uuid!): task
 }
 
 type subscription_root {
-    "An array relationship"
-    articles(
+    "fetch data from the table: \"objectives\""
+    objectives(
         "distinct select on columns"
-        distinct_on: [articles_select_column!],
+        distinct_on: [objectives_select_column!],
         "limit the number of rows returned"
         limit: Int,
         "skip the first n rows. Use only with order_by"
         offset: Int,
         "sort the rows by one or more columns"
-        order_by: [articles_order_by!],
+        order_by: [objectives_order_by!],
         "filter the rows returned"
-        where: articles_bool_exp
-    ): [articles!]!
-    "An aggregate relationship"
-    articles_aggregate(
+        where: objectives_bool_exp
+    ): [objectives!]!
+    "fetch aggregated fields from the table: \"objectives\""
+    objectives_aggregate(
         "distinct select on columns"
-        distinct_on: [articles_select_column!],
+        distinct_on: [objectives_select_column!],
         "limit the number of rows returned"
         limit: Int,
         "skip the first n rows. Use only with order_by"
         offset: Int,
         "sort the rows by one or more columns"
-        order_by: [articles_order_by!],
+        order_by: [objectives_order_by!],
         "filter the rows returned"
-        where: articles_bool_exp
-    ): articles_aggregate!
-    "fetch data from the table: \"articles\" using primary key columns"
-    articles_by_pk(id: uuid!): articles
-    "fetch data from the table: \"users\""
-    users(
+        where: objectives_bool_exp
+    ): objectives_aggregate!
+    "fetch data from the table: \"objectives\" using primary key columns"
+    objectives_by_pk(id: uuid!): objectives
+    "fetch data from the table: \"task\""
+    task(
         "distinct select on columns"
-        distinct_on: [users_select_column!],
+        distinct_on: [task_select_column!],
         "limit the number of rows returned"
         limit: Int,
         "skip the first n rows. Use only with order_by"
         offset: Int,
         "sort the rows by one or more columns"
-        order_by: [users_order_by!],
+        order_by: [task_order_by!],
         "filter the rows returned"
-        where: users_bool_exp
-    ): [users!]!
-    "fetch aggregated fields from the table: \"users\""
-    users_aggregate(
+        where: task_bool_exp
+    ): [task!]!
+    "fetch aggregated fields from the table: \"task\""
+    task_aggregate(
         "distinct select on columns"
-        distinct_on: [users_select_column!],
+        distinct_on: [task_select_column!],
         "limit the number of rows returned"
         limit: Int,
         "skip the first n rows. Use only with order_by"
         offset: Int,
         "sort the rows by one or more columns"
-        order_by: [users_order_by!],
+        order_by: [task_order_by!],
         "filter the rows returned"
-        where: users_bool_exp
-    ): users_aggregate!
-    "fetch data from the table: \"users\" using primary key columns"
-    users_by_pk(id: uuid!): users
+        where: task_bool_exp
+    ): task_aggregate!
+    "fetch data from the table: \"task\" using primary key columns"
+    task_by_pk(id: uuid!): task
 }
 
-"columns and relationships of \"users\""
-type users {
-    "An array relationship"
-    articles(
-        "distinct select on columns"
-        distinct_on: [articles_select_column!],
-        "limit the number of rows returned"
-        limit: Int,
-        "skip the first n rows. Use only with order_by"
-        offset: Int,
-        "sort the rows by one or more columns"
-        order_by: [articles_order_by!],
-        "filter the rows returned"
-        where: articles_bool_exp
-    ): [articles!]!
-    "An aggregate relationship"
-    articles_aggregate(
-        "distinct select on columns"
-        distinct_on: [articles_select_column!],
-        "limit the number of rows returned"
-        limit: Int,
-        "skip the first n rows. Use only with order_by"
-        offset: Int,
-        "sort the rows by one or more columns"
-        order_by: [articles_order_by!],
-        "filter the rows returned"
-        where: articles_bool_exp
-    ): articles_aggregate!
+"columns and relationships of \"task\""
+type task {
+    action: String
     created_at: timestamptz!
-    displayName: String!
-    displayId: String!
+    done: Boolean!
     id: uuid!
+    objectiveId: uuid!
     updated_at: timestamptz!
 }
 
-"aggregated selection of \"users\""
-type users_aggregate {
-    aggregate: users_aggregate_fields
-    nodes: [users!]!
+"aggregated selection of \"task\""
+type task_aggregate {
+    aggregate: task_aggregate_fields
+    nodes: [task!]!
 }
 
-"aggregate fields of \"users\""
-type users_aggregate_fields {
-    count(columns: [users_select_column!], distinct: Boolean): Int!
-    max: users_max_fields
-    min: users_min_fields
+"aggregate fields of \"task\""
+type task_aggregate_fields {
+    count(columns: [task_select_column!], distinct: Boolean): Int!
+    max: task_max_fields
+    min: task_min_fields
 }
 
 "aggregate max on columns"
-type users_max_fields {
+type task_max_fields {
+    action: String
     created_at: timestamptz
-    displayName: String
-    displayId: String
     id: uuid
+    objectiveId: uuid
     updated_at: timestamptz
 }
 
 "aggregate min on columns"
-type users_min_fields {
+type task_min_fields {
+    action: String
     created_at: timestamptz
-    displayName: String
-    displayId: String
     id: uuid
+    objectiveId: uuid
     updated_at: timestamptz
 }
 
-"response of any mutation on the table \"users\""
-type users_mutation_response {
+"response of any mutation on the table \"task\""
+type task_mutation_response {
     "number of rows affected by the mutation"
     affected_rows: Int!
     "data from the rows affected by the mutation"
-    returning: [users!]!
+    returning: [task!]!
 }
 
-"unique or primary key constraints on table \"articles\""
-enum articles_constraint {
+"unique or primary key constraints on table \"objectives\""
+enum objectives_constraint {
     "unique or primary key constraint"
-    articles_pkey
+    objectives_pkey
 }
 
-"select columns of table \"articles\""
-enum articles_select_column {
-    "column name"
-    authorId
-    "column name"
-    content
+"select columns of table \"objectives\""
+enum objectives_select_column {
     "column name"
     created_at
     "column name"
+    favorite
+    "column name"
     id
     "column name"
-    published_at
+    notionUrl
     "column name"
-    subject
+    title
     "column name"
     updated_at
 }
 
-"update columns of table \"articles\""
-enum articles_update_column {
-    "column name"
-    authorId
-    "column name"
-    content
+"update columns of table \"objectives\""
+enum objectives_update_column {
     "column name"
     created_at
     "column name"
+    favorite
+    "column name"
     id
     "column name"
-    published_at
+    notionUrl
     "column name"
-    subject
+    title
     "column name"
     updated_at
 }
@@ -384,40 +348,55 @@ enum order_by {
     desc_nulls_last
 }
 
-"unique or primary key constraints on table \"users\""
-enum users_constraint {
+"unique or primary key constraints on table \"task\""
+enum task_constraint {
     "unique or primary key constraint"
-    users_display_id_key
-    "unique or primary key constraint"
-    users_pkey
+    task_pkey
 }
 
-"select columns of table \"users\""
-enum users_select_column {
+"select columns of table \"task\""
+enum task_select_column {
+    "column name"
+    action
     "column name"
     created_at
     "column name"
-    displayName
-    "column name"
-    displayId
+    done
     "column name"
     id
+    "column name"
+    objectiveId
     "column name"
     updated_at
 }
 
-"update columns of table \"users\""
-enum users_update_column {
+"update columns of table \"task\""
+enum task_update_column {
+    "column name"
+    action
     "column name"
     created_at
     "column name"
-    displayName
-    "column name"
-    displayId
+    done
     "column name"
     id
     "column name"
+    objectiveId
+    "column name"
     updated_at
+}
+
+"Boolean expression to compare columns of type \"Boolean\". All fields are combined with logical 'AND'."
+input Boolean_comparison_exp {
+    _eq: Boolean
+    _gt: Boolean
+    _gte: Boolean
+    _in: [Boolean!]
+    _is_null: Boolean
+    _lt: Boolean
+    _lte: Boolean
+    _neq: Boolean
+    _nin: [Boolean!]
 }
 
 "Boolean expression to compare columns of type \"String\". All fields are combined with logical 'AND'."
@@ -453,101 +432,113 @@ input String_comparison_exp {
     _similar: String
 }
 
-"order by aggregate values of table \"articles\""
-input articles_aggregate_order_by {
-    count: order_by
-    max: articles_max_order_by
-    min: articles_min_order_by
-}
-
-"input type for inserting array relation for remote table \"articles\""
-input articles_arr_rel_insert_input {
-    data: [articles_insert_input!]!
-    "on conflict condition"
-    on_conflict: articles_on_conflict
-}
-
-"Boolean expression to filter rows from the table \"articles\". All fields are combined with a logical 'AND'."
-input articles_bool_exp {
-    _and: [articles_bool_exp!]
-    _not: articles_bool_exp
-    _or: [articles_bool_exp!]
-    authorId: uuid_comparison_exp
-    content: String_comparison_exp
+"Boolean expression to filter rows from the table \"objectives\". All fields are combined with a logical 'AND'."
+input objectives_bool_exp {
+    _and: [objectives_bool_exp!]
+    _not: objectives_bool_exp
+    _or: [objectives_bool_exp!]
     created_at: timestamptz_comparison_exp
+    favorite: Boolean_comparison_exp
     id: uuid_comparison_exp
-    published_at: timestamptz_comparison_exp
-    subject: String_comparison_exp
+    notionUrl: String_comparison_exp
+    title: String_comparison_exp
     updated_at: timestamptz_comparison_exp
-    user: users_bool_exp
 }
 
-"input type for inserting data into table \"articles\""
-input articles_insert_input {
-    authorId: uuid
-    content: String
+"input type for inserting data into table \"objectives\""
+input objectives_insert_input {
     created_at: timestamptz
+    favorite: Boolean
     id: uuid
-    published_at: timestamptz
-    subject: String
+    notionUrl: String
+    title: String
     updated_at: timestamptz
-    user: users_obj_rel_insert_input
 }
 
-"order by max() on columns of table \"articles\""
-input articles_max_order_by {
-    authorId: order_by
-    content: order_by
+"on conflict condition type for table \"objectives\""
+input objectives_on_conflict {
+    constraint: objectives_constraint!
+    update_columns: [objectives_update_column!]! = []
+    where: objectives_bool_exp
+}
+
+"Ordering options when selecting data from \"objectives\"."
+input objectives_order_by {
     created_at: order_by
+    favorite: order_by
     id: order_by
-    published_at: order_by
-    subject: order_by
+    notionUrl: order_by
+    title: order_by
     updated_at: order_by
 }
 
-"order by min() on columns of table \"articles\""
-input articles_min_order_by {
-    authorId: order_by
-    content: order_by
-    created_at: order_by
-    id: order_by
-    published_at: order_by
-    subject: order_by
-    updated_at: order_by
-}
-
-"on conflict condition type for table \"articles\""
-input articles_on_conflict {
-    constraint: articles_constraint!
-    update_columns: [articles_update_column!]! = []
-    where: articles_bool_exp
-}
-
-"Ordering options when selecting data from \"articles\"."
-input articles_order_by {
-    authorId: order_by
-    content: order_by
-    created_at: order_by
-    id: order_by
-    published_at: order_by
-    subject: order_by
-    updated_at: order_by
-    user: users_order_by
-}
-
-"primary key columns input for table: articles"
-input articles_pk_columns_input {
+"primary key columns input for table: objectives"
+input objectives_pk_columns_input {
     id: uuid!
 }
 
-"input type for updating data in table \"articles\""
-input articles_set_input {
-    authorId: uuid
-    content: String
+"input type for updating data in table \"objectives\""
+input objectives_set_input {
     created_at: timestamptz
+    favorite: Boolean
     id: uuid
-    published_at: timestamptz
-    subject: String
+    notionUrl: String
+    title: String
+    updated_at: timestamptz
+}
+
+"Boolean expression to filter rows from the table \"task\". All fields are combined with a logical 'AND'."
+input task_bool_exp {
+    _and: [task_bool_exp!]
+    _not: task_bool_exp
+    _or: [task_bool_exp!]
+    action: String_comparison_exp
+    created_at: timestamptz_comparison_exp
+    done: Boolean_comparison_exp
+    id: uuid_comparison_exp
+    objectiveId: uuid_comparison_exp
+    updated_at: timestamptz_comparison_exp
+}
+
+"input type for inserting data into table \"task\""
+input task_insert_input {
+    action: String
+    created_at: timestamptz
+    done: Boolean
+    id: uuid
+    objectiveId: uuid
+    updated_at: timestamptz
+}
+
+"on conflict condition type for table \"task\""
+input task_on_conflict {
+    constraint: task_constraint!
+    update_columns: [task_update_column!]! = []
+    where: task_bool_exp
+}
+
+"Ordering options when selecting data from \"task\"."
+input task_order_by {
+    action: order_by
+    created_at: order_by
+    done: order_by
+    id: order_by
+    objectiveId: order_by
+    updated_at: order_by
+}
+
+"primary key columns input for table: task"
+input task_pk_columns_input {
+    id: uuid!
+}
+
+"input type for updating data in table \"task\""
+input task_set_input {
+    action: String
+    created_at: timestamptz
+    done: Boolean
+    id: uuid
+    objectiveId: uuid
     updated_at: timestamptz
 }
 
@@ -562,67 +553,6 @@ input timestamptz_comparison_exp {
     _lte: timestamptz
     _neq: timestamptz
     _nin: [timestamptz!]
-}
-
-"Boolean expression to filter rows from the table \"users\". All fields are combined with a logical 'AND'."
-input users_bool_exp {
-    _and: [users_bool_exp!]
-    _not: users_bool_exp
-    _or: [users_bool_exp!]
-    articles: articles_bool_exp
-    created_at: timestamptz_comparison_exp
-    displayName: String_comparison_exp
-    displayId: String_comparison_exp
-    id: uuid_comparison_exp
-    updated_at: timestamptz_comparison_exp
-}
-
-"input type for inserting data into table \"users\""
-input users_insert_input {
-    articles: articles_arr_rel_insert_input
-    created_at: timestamptz
-    displayName: String
-    displayId: String
-    id: uuid
-    updated_at: timestamptz
-}
-
-"input type for inserting object relation for remote table \"users\""
-input users_obj_rel_insert_input {
-    data: users_insert_input!
-    "on conflict condition"
-    on_conflict: users_on_conflict
-}
-
-"on conflict condition type for table \"users\""
-input users_on_conflict {
-    constraint: users_constraint!
-    update_columns: [users_update_column!]! = []
-    where: users_bool_exp
-}
-
-"Ordering options when selecting data from \"users\"."
-input users_order_by {
-    articles_aggregate: articles_aggregate_order_by
-    created_at: order_by
-    displayName: order_by
-    displayId: order_by
-    id: order_by
-    updated_at: order_by
-}
-
-"primary key columns input for table: users"
-input users_pk_columns_input {
-    id: uuid!
-}
-
-"input type for updating data in table \"users\""
-input users_set_input {
-    created_at: timestamptz
-    displayName: String
-    displayId: String
-    id: uuid
-    updated_at: timestamptz
 }
 
 "Boolean expression to compare columns of type \"uuid\". All fields are combined with logical 'AND'."
