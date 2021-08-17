@@ -5,8 +5,7 @@ import {
   InMemoryCache,
 } from '@apollo/client'
 import { AppProps } from 'next/app'
-
-import 'minireset.css'
+import '@/styles/globals.css'
 
 const createApolloClient = () => {
   return new ApolloClient({

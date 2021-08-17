@@ -20,7 +20,7 @@ const ObjectivePage: NextPage = () => {
     return <p>{error.toString()}</p>
   }
 
-  return <div>{JSON.stringify(data)}</div>
+  return <div className="bg-green-400">Hello</div>
 }
 
 export default ObjectivePage
