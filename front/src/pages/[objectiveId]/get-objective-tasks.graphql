@@ -1,0 +1,14 @@
+query getObjectiveTasks($id: uuid!) {
+    objectives_by_pk(id: $id) {
+        favorite
+        notionUrl
+        title
+        tasks {
+            id
+            done
+            action
+            created_at
+            updated_at
+        }
+    }
+}

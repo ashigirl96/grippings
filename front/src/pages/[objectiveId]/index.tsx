@@ -1,12 +1,12 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useGetObjectiveQuery } from '@/generated/graphql'
+import { useGetObjectiveTasksQuery } from '@/generated/graphql'
 
 const ObjectivePage: NextPage = () => {
   const router = useRouter()
   const { objectiveId } = router.query
 
-  const { loading, error, data } = useGetObjectiveQuery({
+  const { loading, error, data } = useGetObjectiveTasksQuery({
     variables: {
       id: objectiveId as string,
     },
