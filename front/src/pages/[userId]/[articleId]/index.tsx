@@ -20,7 +20,7 @@ const ArticlePage: NextPage = () => {
     return <p>{error.toString()}</p>
   }
 
-  return <div>{JSON.stringify(data)}</div>
+  return <div>{JSON.stringify(data.articles_by_pk.user.displayId)}</div>
 }
 
 export default ArticlePage

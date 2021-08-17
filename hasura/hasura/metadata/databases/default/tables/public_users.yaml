@@ -4,7 +4,7 @@ table:
 configuration:
   custom_column_names:
     display_id: displayId
-    display_name: dispalyName
+    display_name: displayName
   custom_root_fields: {}
 array_relationships:
 - name: articles

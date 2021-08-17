@@ -3,7 +3,7 @@ query getArticle($id: uuid!) {
         subject
         user {
             displayId
-            dispalyName
+            displayName
         }
         content
     }
