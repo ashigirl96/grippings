@@ -3,9 +3,6 @@ import { useRouter } from 'next/router'
 import { useGetObjectiveTasksQuery } from '@/generated/graphql'
 import { Layout } from '@/components'
 import {
-  Box,
-  Checkbox,
-  Flex,
   Input,
   InputGroup,
   InputLeftElement,
@@ -14,6 +11,7 @@ import {
 } from '@chakra-ui/react'
 import { sortBy } from 'lodash'
 import { useMemo } from 'react'
+import { PreviewTask } from '@/components/pages/objective/PreviewTask'
 
 const ObjectivePage: NextPage = () => {
   const router = useRouter()
@@ -25,6 +23,17 @@ const ObjectivePage: NextPage = () => {
     },
   })
 
+  const _tasks = data?.objectives_by_pk?.tasks
+
+  const tasks = useMemo(() => {
+    if (_tasks) {
+      return sortBy(data.objectives_by_pk.tasks, [
+        (task) => +task.updated_at,
+      ]).reverse()
+    }
+    return []
+  }, [_tasks])
+
   if (loading) {
     return <p>...loading.</p>
   }
@@ -32,13 +41,6 @@ const ObjectivePage: NextPage = () => {
   if (error) {
     return <p>{error.toString()}</p>
   }
-
-  // TODO: useMemo直して
-  const tasks = useMemo(() => {
-    return sortBy(data.objectives_by_pk.tasks, [
-      (task) => +task.updated_at,
-    ]).reverse()
-  }, [data.objectives_by_pk.tasks])
 
   return (
     <Layout objectiveTitle={data.objectives_by_pk.title}>
@@ -50,14 +52,7 @@ const ObjectivePage: NextPage = () => {
         spacing={'16px'}
       >
         {tasks.map((task) => (
-          <>
-            <Flex>
-              <Checkbox isChecked={task.done} mr={'8px'} colorScheme={'teal'} />
-              <Box textDecoration={task.done && 'line-through'}>
-                {task.action}
-              </Box>
-            </Flex>
-          </>
+          <PreviewTask task={task} />
         ))}
         <InputGroup>
           <InputLeftElement
