@@ -1,0 +1,12 @@
+query getObjectives {
+    objectives {
+        id
+        favorite
+        title
+        tasks {
+            id
+            action
+            done
+        }
+    }
+}
