@@ -1,0 +1,5 @@
+mutation UpdateTaskAction($id: uuid!, $action: String!) {
+    update_task_by_pk(pk_columns: {id: $id}, _set:{ action: $action }) {
+        action
+    }
+}

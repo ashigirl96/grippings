@@ -9,7 +9,11 @@ import {
   Input,
   Spacer,
 } from '@chakra-ui/react'
-import { Task, useUpdateTaskDoneMutation } from '@/generated/graphql'
+import {
+  Task,
+  useUpdateTaskActionMutation,
+  useUpdateTaskDoneMutation,
+} from '@/generated/graphql'
 import { CheckIcon, CloseIcon, EditIcon } from '@chakra-ui/icons'
 
 type Props = {
@@ -29,8 +33,19 @@ export const PreviewTask: VFC<Props> = ({
     [fetchMore, id, updateTaskDone],
   )
 
+  const [updateTaskAction] = useUpdateTaskActionMutation()
   const [isEdit, setIsEdit] = useState(false)
   const [action, setAction] = useState(_action)
+
+  const onSubmitAction = useCallback(async () => {
+    await updateTaskAction({
+      variables: {
+        id,
+        action,
+      },
+    })
+    fetchMore()
+  }, [action, fetchMore, id, updateTaskAction])
 
   return (
     <Flex width={'100%'} align={'center'}>
@@ -52,22 +67,25 @@ export const PreviewTask: VFC<Props> = ({
             colorScheme={'teal'}
             disabled={updateTaskDoneResult.loading}
           />
-          <Box textDecoration={done && 'line-through'}>{action}</Box>
+          <Box textDecoration={done && 'line-through'}>{_action}</Box>
         </Button>
       )}
       <Spacer />
       {isEdit ? (
         <ButtonGroup>
           <IconButton
-            aria-label={'close'}
-            size={'sm'}
-            icon={<CloseIcon color={'red.500'} />}
-            onClick={() => setIsEdit((edit) => !edit)}
-          />
-          <IconButton
             aria-label={'ok'}
             size={'sm'}
             icon={<CheckIcon color={'teal'} />}
+            onClick={async () => {
+              setIsEdit((edit) => !edit)
+              await onSubmitAction()
+            }}
+          />
+          <IconButton
+            aria-label={'close'}
+            size={'sm'}
+            icon={<CloseIcon color={'red.500'} />}
             onClick={() => setIsEdit((edit) => !edit)}
           />
         </ButtonGroup>

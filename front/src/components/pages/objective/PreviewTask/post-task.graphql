@@ -1,0 +1,3 @@
+mutation postTask($objectiveId: uuid!, $action: String!) {
+    insert_task_one(object: { action: $action, objectiveId: $objectiveId}) { id }
+}
