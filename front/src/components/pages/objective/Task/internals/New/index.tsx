@@ -34,6 +34,7 @@ export const New: VFC<Props> = ({ objectiveId, fetchTasks }) => {
             setAction('')
           }
         }}
+        value={action}
         wordBreak={'break-all'}
         placeholder="Add next action"
       />

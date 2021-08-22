@@ -11,10 +11,11 @@ import {
 } from '@chakra-ui/react'
 import {
   Task,
+  useDeleteTaskMutation,
   useUpdateTaskActionMutation,
   useUpdateTaskDoneMutation,
 } from '@/generated/graphql'
-import { CheckIcon, CloseIcon, EditIcon } from '@chakra-ui/icons'
+import { CheckIcon, CloseIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
 
 type Props = {
   task: Omit<Task, 'objectiveId'>
@@ -47,6 +48,8 @@ export const Preview: VFC<Props> = ({
     fetchTasks()
   }, [action, fetchTasks, id, updateTaskAction])
 
+  const [deleteTask] = useDeleteTaskMutation()
+
   return (
     <Flex width={'100%'} align={'center'}>
       {isEdit ? (
@@ -74,6 +77,7 @@ export const Preview: VFC<Props> = ({
       {isEdit ? (
         <ButtonGroup>
           <IconButton
+            _focus={{ outline: 'none' }}
             aria-label={'ok'}
             size={'sm'}
             icon={<CheckIcon color={'teal'} />}
@@ -83,6 +87,7 @@ export const Preview: VFC<Props> = ({
             }}
           />
           <IconButton
+            _focus={{ outline: 'none' }}
             aria-label={'close'}
             size={'sm'}
             icon={<CloseIcon color={'red.500'} />}
@@ -90,11 +95,25 @@ export const Preview: VFC<Props> = ({
           />
         </ButtonGroup>
       ) : (
-        <IconButton
-          aria-label={'edit'}
-          icon={<EditIcon />}
-          onClick={() => setIsEdit((edit) => !edit)}
-        />
+        <ButtonGroup>
+          <IconButton
+            _focus={{ outline: 'none' }}
+            aria-label={'delete'}
+            size={'sm'}
+            icon={<DeleteIcon color={'red.300'} />}
+            onClick={async () => {
+              await deleteTask({ variables: { id } })
+              await fetchTasks()
+            }}
+          />
+          <IconButton
+            _focus={{ outline: 'none' }}
+            aria-label={'edit'}
+            size={'sm'}
+            icon={<EditIcon color={'teal'} />}
+            onClick={() => setIsEdit((edit) => !edit)}
+          />
+        </ButtonGroup>
       )}
     </Flex>
   )
