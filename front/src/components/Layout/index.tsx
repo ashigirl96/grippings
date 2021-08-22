@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, ReactNode } from 'react'
 import {
   Box,
   DarkMode,
@@ -11,7 +11,7 @@ import {
 import { AddIcon } from '@chakra-ui/icons'
 
 type Props = {
-  objectiveTitle?: string
+  objectiveTitle?: ReactNode
 }
 export const Layout: FC<Props> = ({ objectiveTitle, children }) => {
   return (

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { useGetObjectiveTasksQuery } from '@/generated/graphql'
 import { Layout } from '@/components'
 import {
+  Button,
   Input,
   InputGroup,
   InputLeftElement,
@@ -17,19 +18,21 @@ const ObjectivePage: NextPage = () => {
   const router = useRouter()
   const { objectiveId } = router.query
 
-  const { loading, error, data } = useGetObjectiveTasksQuery({
+  const { loading, error, data, fetchMore } = useGetObjectiveTasksQuery({
     variables: {
       id: objectiveId as string,
     },
   })
 
-  const _tasks = data?.objectives_by_pk?.tasks
+  const _tasks = data && data.objectives_by_pk && data.objectives_by_pk.tasks
 
   const tasks = useMemo(() => {
     if (_tasks) {
-      return sortBy(data.objectives_by_pk.tasks, [
-        (task) => +task.updated_at,
-      ]).reverse()
+      return sortBy(_tasks, [
+        (task) => {
+          return new Date(task.created_at).getTime()
+        },
+      ])
     }
     return []
   }, [_tasks])
@@ -43,7 +46,17 @@ const ObjectivePage: NextPage = () => {
   }
 
   return (
-    <Layout objectiveTitle={data.objectives_by_pk.title}>
+    <Layout
+      objectiveTitle={
+        <Button
+          onClick={async () =>
+            await fetchMore({ variables: { id: objectiveId as string } })
+          }
+        >
+          {data.objectives_by_pk.title}
+        </Button>
+      }
+    >
       <VStack
         align={'start'}
         rounded={'xl'}
@@ -52,7 +65,12 @@ const ObjectivePage: NextPage = () => {
         spacing={'16px'}
       >
         {tasks.map((task) => (
-          <PreviewTask task={task} />
+          <PreviewTask
+            task={task}
+            fetchMore={() =>
+              fetchMore({ variables: { id: objectiveId as string } })
+            }
+          />
         ))}
         <InputGroup>
           <InputLeftElement
