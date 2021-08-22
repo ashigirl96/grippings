@@ -2,7 +2,7 @@ import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useGetObjectiveTasksQuery } from '@/generated/graphql'
 import { Layout } from '@/components'
-import { Button } from '@chakra-ui/react'
+import { Button, Link } from '@chakra-ui/react'
 import { sortBy } from 'lodash'
 import { useCallback, useMemo } from 'react'
 import { Task } from '@/components/pages/objective'
@@ -45,7 +45,7 @@ const ObjectivePage: NextPage = () => {
   return (
     <Layout
       objectiveTitle={
-        <Button onClick={async () => await fetchTasks()}>
+        <Button as="a" href={`/objective/${objectiveId}`}>
           {data.objectives_by_pk.title}
         </Button>
       }

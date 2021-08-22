@@ -1,6 +1,7 @@
 import { FC, ReactNode } from 'react'
 import {
   Box,
+  Button,
   DarkMode,
   Flex,
   Heading,
@@ -18,7 +19,9 @@ export const Layout: FC<Props> = ({ objectiveTitle, children }) => {
     <DarkMode>
       <Box height={'100vh'}>
         <Flex p={'24px'} justifyContent={'space-between'} align={'center'}>
-          <Heading size="xl">GRIPPINGs</Heading>
+          <Button as="a" href={`/`} _focus={{ outline: 'none' }}>
+            <Heading size="xl">GRIPPINGs</Heading>
+          </Button>
           <Spacer />
           <Heading size="md">{objectiveTitle ? objectiveTitle : ''}</Heading>
           <Spacer />
