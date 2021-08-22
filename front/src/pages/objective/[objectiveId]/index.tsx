@@ -2,17 +2,10 @@ import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useGetObjectiveTasksQuery } from '@/generated/graphql'
 import { Layout } from '@/components'
-import {
-  Button,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
-  VStack,
-} from '@chakra-ui/react'
+import { Button } from '@chakra-ui/react'
 import { sortBy } from 'lodash'
-import { useMemo } from 'react'
-import { PreviewTask } from '@/components/pages/objective/PreviewTask'
+import { useCallback, useMemo } from 'react'
+import { Task } from '@/components/pages/objective'
 
 const ObjectivePage: NextPage = () => {
   const router = useRouter()
@@ -37,6 +30,10 @@ const ObjectivePage: NextPage = () => {
     return []
   }, [_tasks])
 
+  const fetchTasks = useCallback(async () => {
+    await fetchMore({ variables: { id: objectiveId as string } })
+  }, [fetchMore, objectiveId])
+
   if (loading) {
     return <p>...loading.</p>
   }
@@ -48,41 +45,17 @@ const ObjectivePage: NextPage = () => {
   return (
     <Layout
       objectiveTitle={
-        <Button
-          onClick={async () =>
-            await fetchMore({ variables: { id: objectiveId as string } })
-          }
-        >
+        <Button onClick={async () => await fetchTasks()}>
           {data.objectives_by_pk.title}
         </Button>
       }
     >
-      <VStack
-        align={'start'}
-        rounded={'xl'}
-        shadow={'xl'}
-        p={'16px'}
-        spacing={'16px'}
-      >
+      <Task>
         {tasks.map((task) => (
-          <PreviewTask
-            task={task}
-            fetchMore={() =>
-              fetchMore({ variables: { id: objectiveId as string } })
-            }
-          />
+          <Task.Preview task={task} fetchTasks={fetchTasks} />
         ))}
-        <InputGroup>
-          <InputLeftElement
-            pointerEvents="none"
-            color="teal"
-            fontSize="1.2em"
-            children="+"
-          />
-          <Input wordBreak={'break-all'} placeholder="Add next action" />
-          <InputRightElement children="⏎" />
-        </InputGroup>
-      </VStack>
+        <Task.New objectiveId={objectiveId as string} fetchTasks={fetchTasks} />
+      </Task>
     </Layout>
   )
 }

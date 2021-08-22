@@ -18,19 +18,19 @@ import { CheckIcon, CloseIcon, EditIcon } from '@chakra-ui/icons'
 
 type Props = {
   task: Omit<Task, 'objectiveId'>
-  fetchMore: () => void
+  fetchTasks: () => void
 }
-export const PreviewTask: VFC<Props> = ({
-  fetchMore,
+export const Preview: VFC<Props> = ({
+  fetchTasks,
   task: { done, id, action: _action },
 }) => {
   const [updateTaskDone, updateTaskDoneResult] = useUpdateTaskDoneMutation()
   const changeDone = useCallback(
     async (done: boolean) => {
       await updateTaskDone({ variables: { id, done } })
-      fetchMore()
+      fetchTasks()
     },
-    [fetchMore, id, updateTaskDone],
+    [fetchTasks, id, updateTaskDone],
   )
 
   const [updateTaskAction] = useUpdateTaskActionMutation()
@@ -44,8 +44,8 @@ export const PreviewTask: VFC<Props> = ({
         action,
       },
     })
-    fetchMore()
-  }, [action, fetchMore, id, updateTaskAction])
+    fetchTasks()
+  }, [action, fetchTasks, id, updateTaskAction])
 
   return (
     <Flex width={'100%'} align={'center'}>
