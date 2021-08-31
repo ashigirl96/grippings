@@ -8,6 +8,6 @@
   },
   "scripts": {
     "status": "hasura --project hasura migrate status",
-    "consule": "hasura --project hasura console"
+    "console": "hasura --project hasura console"
   }
 }

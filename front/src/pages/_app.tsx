@@ -5,7 +5,6 @@ import {
   InMemoryCache,
 } from '@apollo/client'
 import { AppProps } from 'next/app'
-import '@/styles/globals.css'
 import { ChakraProvider } from '@chakra-ui/react'
 
 const createApolloClient = () => {
